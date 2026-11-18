@@ -66,4 +66,4 @@ SQLite, and I wrote tests for the budget rules. I can also export a monthly Exce
 - **What would you improve?** Edit expenses, income tracking, charts, PostgreSQL + deployment, a password reset flow.
 
 ## Honest Note
-Read `services/` and `schema.sql` until you can explain each function.
+This project was developed locally by three team members. 
