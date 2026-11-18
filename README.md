@@ -48,14 +48,14 @@ Other pages: dashboard with progress bars, expense list with delete, Excel expor
 | `seed.py` | Demo data |
 | `TEAM_WORK.md` | Who owns which files (Rafi, Hrishika, Samia), what to say about each part, and the Git workflow |
 
-## How to explain it in 60 seconds
+## Short explanation
 "TakaTrack is a budget tracker for Bangladeshi users. You set a monthly budget that repeats automatically.
 Every expense has a category with an optional monthly limit; if I add a new category it asks for a limit,
 and if an expense goes over the limit it shows a caution. At the end of the month, leftover money can be
 carried to the next month or moved to savings. It is built with Flask and SQL, the data is stored in
 SQLite, and I wrote tests for the budget rules. I can also export a monthly Excel report using Pandas."
 
-## Questions you may get (short answers)
+## Basic questions related to this
 - **Why SQLite?** No setup, one file. The SQL is standard, so moving to PostgreSQL/MySQL means changing the connection code and a few column types.
 - **Why store money as whole taka (INTEGER)?** Decimals/floats can create rounding errors in money.
 - **How is a user's data kept private?** Every query has `WHERE user_id = ?` using the logged-in user.
@@ -66,4 +66,4 @@ SQLite, and I wrote tests for the budget rules. I can also export a monthly Exce
 - **What would you improve?** Edit expenses, income tracking, charts, PostgreSQL + deployment, a password reset flow.
 
 ## Honest note
-This project was written with AI assistance. Read `services/` and `schema.sql` until you can explain each function; those two files are what an interviewer will ask about.
+Read `services/` and `schema.sql` until you can explain each function.
