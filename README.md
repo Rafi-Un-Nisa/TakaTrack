@@ -1,4 +1,4 @@
-# TakaTrack - personal budget tracker (৳)
+# TakaTrack - Personal Budget Tracker (৳)
 
 A web app that helps you plan a monthly budget in Taka, track expenses by category,
 get a caution before you overspend, and decide what to do with leftover money at month-end.
