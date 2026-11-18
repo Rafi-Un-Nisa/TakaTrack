@@ -24,7 +24,7 @@ Run the tests: `python -m unittest discover -s tests -v`
 - Carried money is added to next month's budget (`monthly_budgets.carried_over`).
   Savings are recorded in `rollovers.saved` and summed on the Savings page.
 
-### 2. Category limits and caution
+### 2. Category limits and Caution
 - Type any category when adding an expense. If it is **new** (or has no limit and was never asked),
   the app asks for a **monthly limit** for it first. You can skip once.
   Limits can also be set any time on the **Spending limits** page.
@@ -35,7 +35,7 @@ Other pages: dashboard with progress bars, expense list with delete, Excel expor
 
 ## Where things are (read in this order)
 
-| File / folder | What it does |
+| File / folder | What It Does |
 |---|---|
 | `schema.sql` | The 6 database tables. Start here: users, categories, expenses, monthly_budgets, rollovers |
 | `services/` | All money rules in plain Python + SQL: `common.py` (dates, totals), `budget.py` (rollover, savings), `limits.py` (limits, cautions) |
@@ -48,7 +48,7 @@ Other pages: dashboard with progress bars, expense list with delete, Excel expor
 | `seed.py` | Demo data |
 | `TEAM_WORK.md` | Who owns which files (Rafi, Hrishika, Samia), what to say about each part, and the Git workflow |
 
-## Short explanation
+## Short Explanation
 "TakaTrack is a budget tracker for Bangladeshi users. You set a monthly budget that repeats automatically.
 Every expense has a category with an optional monthly limit; if I add a new category it asks for a limit,
 and if an expense goes over the limit it shows a caution. At the end of the month, leftover money can be
@@ -65,5 +65,5 @@ SQLite, and I wrote tests for the budget rules. I can also export a monthly Exce
 - **What is a JOIN?** Combining tables, e.g. `expenses JOIN categories` to show the category name next to each expense.
 - **What would you improve?** Edit expenses, income tracking, charts, PostgreSQL + deployment, a password reset flow.
 
-## Honest note
+## Honest Note
 Read `services/` and `schema.sql` until you can explain each function.
