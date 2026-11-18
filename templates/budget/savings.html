@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{# Owner: Rafi #}
+{% block title %}Savings{% endblock %}
+{% block content %}
+<h1>Savings</h1>
+<section class="card"><p class="big">{{ total|taka }}</p><p class="muted">Total moved to savings from your leftover budget.</p></section>
+<section class="card">
+  <h2>Month-end decisions</h2>
+  {% if rows %}
+  <table>
+    <tr><th>Month</th><th class="num">Leftover</th><th class="num">Carried to next month</th><th class="num">Moved to savings</th></tr>
+    {% for r in rows %}<tr><td>{{ r.label }}</td><td class="num">{{ r.leftover|taka }}</td><td class="num">{{ r.carried|taka }}</td><td class="num">{{ r.saved|taka }}</td></tr>{% endfor %}
+  </table>
+  {% else %}<p class="muted">No decisions yet. They appear after a month ends with money left over.</p>{% endif %}
+</section>
+{% endblock %}

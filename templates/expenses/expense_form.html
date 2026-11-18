@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{# Owner: Hrishika #}
+{% block title %}Add expense{% endblock %}
+{% block content %}
+<h1>Add expense</h1>
+<form method="post" id="expense-form" class="card form narrow">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <label>What did you spend on?
+    <input name="title" value="{{ form.title }}" required autofocus></label>
+  <label>Amount (৳)
+    <input name="amount" type="number" min="1" step="1" value="{{ form.amount }}" required></label>
+  <label>Category <span class="muted">(pick one or type a new one)</span>
+    <input name="category" list="cats" value="{{ form.category }}" required autocomplete="off"></label>
+  <datalist id="cats">{% for c in categories %}<option value="{{ c.name }}">{% endfor %}</datalist>
+  <label>Date <input name="spent_on" type="date" value="{{ form.spent_on }}" required></label>
+  <label>Note (optional) <input name="note" value="{{ form.note }}"></label>
+
+  {% if need_limit %}
+  <div class="notice info">
+    <strong>"{{ form.category }}" has no monthly spending limit yet.</strong>
+    Set one now so TakaTrack can warn you before you overspend.
+    <label>Monthly limit for {{ form.category }} (৳)
+      <input name="limit" type="number" min="1" step="1" value="{{ form.limit }}" autofocus></label>
+  </div>
+  {% else %}
+  <input type="hidden" name="limit" value="{{ form.limit }}">
+  {% endif %}
+  {% if skip %}<input type="hidden" name="skip_limit" value="1">{% endif %}
+
+  {% for w in warnings %}<div class="notice warning">&#9888; {{ w.message }}</div>{% endfor %}
+  <div id="live-caution" class="notice warning" hidden></div>
+
+  <div class="row">
+    {% if need_limit %}
+      <button class="btn" type="submit">Save limit &amp; add expense</button>
+      <button class="btn ghost" type="submit" name="skip_limit" value="1">Skip, no limit</button>
+    {% elif warnings %}
+      <button class="btn danger" type="submit" name="confirm" value="1">Add anyway</button>
+      <a class="btn ghost" href="{{ url_for('expenses.add_expense') }}">Cancel</a>
+    {% else %}
+      <button class="btn" type="submit">Add expense</button>
+    {% endif %}
+  </div>
+</form>
+{% endblock %}

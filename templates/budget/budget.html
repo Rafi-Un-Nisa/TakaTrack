@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{# Owner: Rafi #}
+{% block title %}Monthly budget{% endblock %}
+{% block content %}
+<h1>Monthly budget</h1>
+<form method="post" class="card form narrow">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <p>This amount <strong>repeats automatically every month</strong>. If you have money left at the end of a month, you choose whether to carry it into the next month or move it to savings.</p>
+  <label>Budget per month (৳) <input name="amount" type="number" min="0" step="1" value="{{ current }}" required autofocus></label>
+  <button class="btn" type="submit">Save budget</button>
+</form>
+{% endblock %}

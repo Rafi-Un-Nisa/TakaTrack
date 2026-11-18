@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{# Owner: Rafi #}
+{% block title %}Month-end decision{% endblock %}
+{% block content %}
+<h1>{{ info.label }}: what to do with the leftover?</h1>
+<div class="card narrow">
+  <p>Budget {{ info.total|taka }} &minus; spent {{ info.spent|taka }} = <strong class="big">{{ info.leftover|taka }}</strong> left over.</p>
+  <form method="post" class="form">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <label>Carry to {{ info.next_label }}'s budget (৳)
+      <input name="carry" type="number" min="0" max="{{ info.leftover }}" step="1" value="{{ info.leftover }}"></label>
+    <label>Move to savings (৳)
+      <input name="save" type="number" min="0" max="{{ info.leftover }}" step="1" value="0"></label>
+    <p class="muted">The two amounts together cannot be more than {{ info.leftover|taka }}. Anything you do not assign is released (not carried, not saved). Enter 0 and 0 to skip.</p>
+    <div class="row">
+      <button class="btn" type="submit">Confirm</button>
+      <a class="btn ghost" href="{{ url_for('dashboard.dashboard') }}">Decide later</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

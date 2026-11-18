@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{# Owner: Hrishika #}
+{% block title %}Expenses{% endblock %}
+{% block content %}
+<div class="row between">
+  <h1>Expenses - {{ label }}</h1>
+  <form method="get" class="row"><input type="month" name="month" value="{{ month_key }}"><button class="btn small" type="submit">Show</button></form>
+</div>
+<section class="card">
+  {% if rows %}
+  <table>
+    <tr><th>Date</th><th>Item</th><th>Category</th><th>Note</th><th class="num">Amount</th><th></th></tr>
+    {% for e in rows %}
+    <tr>
+      <td>{{ e.spent_on }}</td><td>{{ e.title }}</td><td>{{ e.category }}</td><td class="muted">{{ e.note }}</td>
+      <td class="num">{{ e.amount|taka }}</td>
+      <td><form method="post" action="{{ url_for('expenses.delete_expense', expense_id=e.id) }}" class="inline" onsubmit="return confirm('Delete this expense?')">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="link danger-text" type="submit">Delete</button></form></td>
+    </tr>
+    {% endfor %}
+    <tr class="total"><td colspan="4">Total</td><td class="num">{{ total|taka }}</td><td></td></tr>
+  </table>
+  {% else %}<p class="muted">No expenses in {{ label }}.</p>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{# Owner: Samia #}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row between">
+  <h1>{{ label }}</h1>
+  <div class="row">
+    <a class="btn small ghost" href="{{ url_for('dashboard.dashboard', month=prev_key) }}">&larr; Previous</a>
+    <a class="btn small ghost" href="{{ url_for('dashboard.dashboard', month=next_key) }}">Next &rarr;</a>
+    <a class="btn small ghost" href="{{ url_for('dashboard.report', month=month_key) }}">Download Excel</a>
+  </div>
+</div>
+
+{% if pending %}
+<div class="notice info">
+  <strong>You have {{ pending.leftover|taka }} left over from {{ pending.label }}.</strong>
+  Carry it to {{ pending.next_label }}'s budget, move it to savings, or split it.
+  <a class="btn small" href="{{ url_for('budget.rollover', year=pending.year, month=pending.month) }}">Decide now</a>
+</div>
+{% endif %}
+
+<div class="grid">
+  <section class="card">
+    <h2>Monthly budget</h2>
+    {% if summary.has_budget %}
+      <p class="big {{ 'bad' if summary.over else '' }}">{{ summary.remaining|taka }} <span class="muted">left</span></p>
+      <div class="bar"><div class="fill {{ 'over' if summary.over else ('near' if summary.percent >= 80 else 'ok') }}" style="width: {{ summary.bar }}%"></div></div>
+      <p class="muted">Spent {{ summary.spent|taka }} of {{ summary.total|taka }}
+        ({{ summary.base|taka }} budget{% if summary.carried %} + {{ summary.carried|taka }} carried over{% endif %})</p>
+    {% else %}
+      <p>No budget for this month. <a href="{{ url_for('budget.budget') }}">Set your monthly budget</a> and it will repeat every month.</p>
+      <p class="muted">Spent: {{ summary.spent|taka }}</p>
+    {% endif %}
+  </section>
+  <section class="card">
+    <h2>Savings</h2>
+    <p class="big">{{ savings|taka }}</p>
+    <p class="muted">Money you moved to savings at month-end. <a href="{{ url_for('budget.savings') }}">See history</a></p>
+  </section>
+</div>
+
+<section class="card">
+  <div class="row between"><h2>Category limits</h2><a href="{{ url_for('limits.limits') }}">Manage limits</a></div>
+  {% if categories %}
+    {% for c in categories %}
+    <div class="cat">
+      <div class="row between">
+        <strong>{{ c.name }}</strong>
+        <span>
+          {{ c.spent|taka }}{% if c.limit %} / {{ c.limit|taka }}{% endif %}
+          {% if c.status == 'over' %}<span class="badge over">Over limit</span>
+          {% elif c.status == 'near' %}<span class="badge near">Almost there</span>
+          {% elif c.status == 'none' %}<span class="badge none">No limit</span>{% endif %}
+        </span>
+      </div>
+      {% if c.limit %}<div class="bar"><div class="fill {{ c.status }}" style="width: {{ c.bar }}%"></div></div>{% endif %}
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="muted">No categories yet. They are created when you add an expense.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <div class="row between"><h2>Recent expenses</h2><a href="{{ url_for('expenses.expenses', month=month_key) }}">See all</a></div>
+  {% if recent %}
+  <table>
+    <tr><th>Date</th><th>Item</th><th>Category</th><th class="num">Amount</th></tr>
+    {% for e in recent %}
+    <tr><td>{{ e.spent_on }}</td><td>{{ e.title }}</td><td>{{ e.category }}</td><td class="num">{{ e.amount|taka }}</td></tr>
+    {% endfor %}
+  </table>
+  {% else %}<p class="muted">Nothing yet. <a href="{{ url_for('expenses.add_expense') }}">Add your first expense</a>.</p>{% endif %}
+</section>
+{% endblock %}

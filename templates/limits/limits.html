@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{# Owner: Hrishika #}
+{% block title %}Spending limits{% endblock %}
+{% block content %}
+<h1>Spending limits</h1>
+<p class="muted">A limit is the most you want to spend in one category each month. You will get a caution when an expense goes over it. Showing {{ label }}.</p>
+<section class="card">
+  {% if categories %}
+  <table>
+    <tr><th>Category</th><th class="num">Spent this month</th><th>Monthly limit (৳)</th><th></th></tr>
+    {% for c in categories %}
+    <tr>
+      <td>{{ c.name }}</td><td class="num">{{ c.spent|taka }}</td>
+      <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="category_id" value="{{ c.id }}">
+        <td><input name="limit" type="number" min="1" step="1" value="{{ c.limit or '' }}" placeholder="No limit"></td>
+        <td><button class="btn small" type="submit">Save</button></td>
+      </form>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="muted">Leave the box empty and press Save to remove a limit.</p>
+  {% else %}<p class="muted">No categories yet.</p>{% endif %}
+</section>
+<section class="card">
+  <h2>Add a category</h2>
+  <form method="post" class="row">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <input name="new_name" placeholder="Category name" required>
+    <input name="limit" type="number" min="1" step="1" placeholder="Monthly limit (optional)">
+    <button class="btn" type="submit">Add</button>
+  </form>
+</section>
+{% endblock %}
